@@ -8,7 +8,7 @@ require('dotenv').config();
 let app=express();
 
 app.use(cors({
-  origin:'https://khatabook-ui.onrender.com/',
+  origin:'https://khatabook-ui.onrender.com',
   methods:['POST','GET','PUT','DELETE']
 }));
 app.use(express.json());
