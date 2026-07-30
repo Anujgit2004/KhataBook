@@ -112,7 +112,7 @@ setAdata({
     TotalPrice:'',
     Deposit:''  
 })
-handleSubmit(e);
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)})
 }
 }
 
@@ -131,7 +131,7 @@ setData({
     date:''
 })
 setupdate(false)
-handleSubmit(e);
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)});
 setdata({
   Cname:'',
   Product:''
