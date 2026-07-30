@@ -1,5 +1,6 @@
 const { Data } = require("./DataSchema");
 const { generatetoken } = require("./Jwt");
+require('dotenv').config();
 const { User } = require("./UserSchema");
 const bcrypt=require('bcrypt')
 let Uemail=null;
@@ -14,8 +15,8 @@ next()
 const Admin=async(req,res)=>{
     try{
  let name='Admin Panel'
-    let email='admin123@gmail.com';
-    let Pass='Admin1234'
+ let email=process.env.ADMIN_EMAIL
+ let Pass=process.env.ADMIN_PASS
 let findadmin=await User.findOne({email});
 if(!findadmin){
   let hashpass=await bcrypt.hash(Pass,10)
