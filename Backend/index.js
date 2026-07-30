@@ -6,9 +6,9 @@ const { Signup, Admin } = require('./api');
 const route = require('./Route');
 require('dotenv').config();
 let app=express();
-let frontend=
+
 app.use(cors({
-  origin:'',
+  origin:'https://khatabook-ui.onrender.com/',
 }));
 app.use(express.json());
 
