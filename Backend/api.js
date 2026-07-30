@@ -6,7 +6,8 @@ const bcrypt=require('bcrypt')
 let Uemail=null;
 
 const middleware=(req,res,next)=>{
-if(Uemail!='admin123@gmail.com'){
+    let mail=process.env.ADMIN_EMAIL
+if(Uemail!=mail){
     return res.send('Only admin can update or delete')
 }
 next()
