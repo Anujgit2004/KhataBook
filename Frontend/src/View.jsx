@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import logo from './assets/LEKHA JOKHA.png'
 import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from './App';
 export default function View() {
-
+let Api=useContext(UserContext)
 let [getid,setid]=useState(0);
 let [ids,setids]=useState();
 let [Update,setupdate]=useState(false)
@@ -44,12 +46,12 @@ const[fact,setfact]=useState([])
 
 //to fetch all data
 useEffect(()=>{
-axios.get('http://localhost:7000/auth/Data').then((response)=>{setfact(response.data)})
+axios.get(`${Api}/auth/Data`).then((response)=>{setfact(response.data)})
 },[])
 
 //to fetch filtered data
 useEffect(()=>{
-axios.post('http://localhost:7000/auth/Show',data).then((res)=>{setfact(res.data)})
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)})
 },[data])
 
 
@@ -99,7 +101,7 @@ if(Adata.Cname==''||Adata.Product==''||Adata.Qty==''||Adata.TotalPrice==''||Adat
   alert('All fields are required to be filled')
 }
 else{
-let response=await axios.post('http://localhost:7000/auth/Send',Adata)
+let response=await axios.post(`${Api}/auth/Send`,Adata)
 if(response.data){
     alert('Stored Successfully')
 }
@@ -118,7 +120,7 @@ handleSubmit(e);
 //to update fields
 const handlesubmit=async(e)=>{
   e.preventDefault()
-let response= await axios.put(`http://localhost:7000/auth/UpdateAmount/?id=${getid}`,Data)
+let response= await axios.put(`${Api}/auth/UpdateAmount/?id=${getid}`,Data)
 alert(response.data)
 setData({
     Cname:'',
@@ -139,9 +141,9 @@ setdata({
  const handleDelete=async(ids)=>{
  let confirmation= confirm('do you want to delete this data');
  if(confirmation){
-let response=await axios.delete(`http://localhost:7000/auth/Delete/${ids}`)
+let response=await axios.delete(`${Api}/auth/Delete/${ids}`)
 alert(response.data)
-  let responses=await axios.post('http://localhost:7000/auth/Show',data)
+  let responses=await axios.post(`${Api}/auth/Show`,data)
 setfact(responses.data)
 setactive(true)
 setdata({

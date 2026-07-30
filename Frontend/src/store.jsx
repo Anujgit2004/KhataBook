@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import logo from './assets/LEKHA JOKHA.png'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { UserContext } from './App';
 export default function Store() {
-
+let Api=useContext(UserContext)
 const[data,setdata]=useState({
     Cname:'',
     Product:'',
@@ -26,7 +28,7 @@ if(data.Cname==''||data.Product==''||data.Qty==''||data.TotalPrice==''||data.Dep
   alert('All fields are required to be filled')
 }
 else{
-let response=await axios.post('http://localhost:7000/auth/Send',data)
+let response=await axios.post(`${Api}/auth/Send`,data)
 if(response.data){
     alert('Stored Successfully')
 }

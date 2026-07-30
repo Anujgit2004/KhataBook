@@ -6,7 +6,10 @@ const { Signup, Admin } = require('./api');
 const route = require('./Route');
 require('dotenv').config();
 let app=express();
-app.use(cors());
+let frontend=
+app.use(cors({
+  origin:'',
+}));
 app.use(express.json());
 
 
@@ -27,6 +30,7 @@ console.log(err)
 }
 run()
 Admin();
+app.get('/',(req,res)=>res.send('backend is running'))
 app.use('/auth',route)
 app.use('/user',route)
 app.listen(7000);

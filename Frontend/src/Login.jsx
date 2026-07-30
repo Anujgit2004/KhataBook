@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router';
 import logo from './assets/LEKHA JOKHA.png'
+import { useContext } from 'react';
+import { UserContext } from './App';
 export default function Login() {
- 
+ let Apis=useContext(UserContext)
+ console.log(Apis)
     const[loginD,setloginD]=useState();
     const[input,setinput]=useState({
         email:'',
@@ -27,7 +30,7 @@ if(input.email==''||input.password==''){
       alert('Enter proper email address')
     }
     else{
-let response=await axios.post('http://localhost:7000/auth/Login',input)
+let response=await axios.post(`${Apis}/auth/Login`,input)
 if(response.data.message){
 alert(response.data.message)
 }
