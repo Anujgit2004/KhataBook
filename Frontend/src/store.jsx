@@ -5,6 +5,19 @@ import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import { UserContext } from './App';
 export default function Store() {
+let navigate=  useNavigate()
+   let gettoken=localStorage.getItem('token');
+if(!gettoken){
+navigate('/')
+}
+window.addEventListener('beforeunload', (event) => {
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    
+    // Chrome requires returnValue to be set.
+    event.returnValue = '';
+});
+
 let Api=useContext(UserContext)
 const[data,setdata]=useState({
     Cname:'',
@@ -13,7 +26,7 @@ const[data,setdata]=useState({
     TotalPrice:'',
     Deposit:''
 })
-let navigate=useNavigate()
+
 const handleinput=(e)=>{
     let prod={...data}
 let getvaue=e.target.value;

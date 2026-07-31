@@ -2,6 +2,15 @@ import React, { useEffect } from 'react'
 import logo from './assets/LEKHA JOKHA.png'
 import { Link, useNavigate } from 'react-router'
 export default function MainPage() {
+
+window.addEventListener('beforeunload', (event) => {
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    
+    // Chrome requires returnValue to be set.
+    event.returnValue = '';
+});
+
   let name=localStorage.getItem('name')
   let navigate=useNavigate();
 

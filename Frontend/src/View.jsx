@@ -3,7 +3,23 @@ import logo from './assets/LEKHA JOKHA.png'
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from './App';
+import { useNavigate } from 'react-router';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 export default function View() {
+let navigate= useNavigate();
+   let gettoken=localStorage.getItem('token');
+if(!gettoken){
+navigate('/')
+}
+window.addEventListener('beforeunload', (event) => {
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    
+    // Chrome requires returnValue to be set.
+    event.returnValue = '';
+});
+
 let Api=useContext(UserContext)
 let [getid,setid]=useState(0);
 let [ids,setids]=useState();
@@ -175,7 +191,75 @@ const Cancel=()=>{
 
 
 }
-console.log(fact)
+
+const printPDF = () => {
+  const doc = new jsPDF("landscape");
+
+  doc.setFontSize(18);
+  doc.text("Transaction Report", 14, 15);
+
+  const tableColumn = [
+    "Date",
+    "Company Name",
+    "Product Name",
+    "Quantity",
+    "Total Amount",
+    "Deposit",
+    "Credit",
+  ];
+
+  const tableRows = [];
+
+  let total = 0;
+  let deposit = 0;
+  let credit = 0;
+
+  fact.forEach((v) => {
+    total += v.TotalPrice;
+    deposit += v.Deposit;
+    credit += v.Credit;
+
+    tableRows.push([
+      new Date(v.date).toLocaleDateString(),
+      v.Cname,
+      v.Product,
+      v.Qty,
+      v.TotalPrice,
+      v.Deposit,
+      v.Credit,
+    ]);
+  });
+
+  // Add totals row
+  tableRows.push([
+    "",
+    "",
+    "Total",
+    "",
+    total,
+    deposit,
+    credit,
+  ]);
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 25,
+    theme: "grid",
+    headStyles: {
+      fillColor: [0, 128, 0],
+      textColor: 255,
+    },
+    styles: {
+      halign: "center",
+      fontSize: 10,
+    },
+  });
+
+  doc.save("Transaction_Report.pdf");
+};
+
+
   return (
     <div className='flex flex-col gap-8 items-center max-xl:p-2'>
       <img src={logo} alt="" className='w-[300px] max-lg:w-[250px] max-sm:w-[200px]'/>
@@ -253,7 +337,7 @@ return(
 
 <div className={`w-2/6 flex justify-around mb-5 ${active&&fact.length!=0?'':'hidden'}`}>
   <button className={`font-medium px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer ${(data.Cname!=''?'':'hidden')}`} onClick={()=>handleAdd(fact[0]?.Cname)} >Add more to {fact[0]?.Cname}</button>
-  <button className='font-medium px-4 py-1 bg-green-500 text-white rounded-xl cursor-pointer' >Print</button>
+  <button className='font-medium px-4 py-1 bg-green-500 text-white rounded-xl cursor-pointer' onClick={printPDF}>Print</button>
 </div>
 
 {Update?
