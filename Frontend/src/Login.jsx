@@ -35,6 +35,7 @@ if(input.email==''||input.password==''){
 let response=await axios.post(`${Apis}/auth/Login`,input)
 if(response.data.message){
 alert(response.data.message)
+setspin(false)
 }
 else{
       localStorage.setItem('token',response.data.data)

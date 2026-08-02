@@ -34,6 +34,7 @@ export default function Register() {
     let response=await axios.post(`${Api}/auth/Signup`,input)
     if(response.data.message){
 alert(response.data.message)
+setspin(false)
 }
 else{
   localStorage.setItem('token',response.data.data)
@@ -45,7 +46,7 @@ else{
     password:'' ,
     })
     }
-    let gettoken=localStorage.getItem('token');
+let gettoken=localStorage.getItem('token');
 if(gettoken){
   setspin(false)
 navigate('/Main')
