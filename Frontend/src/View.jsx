@@ -64,14 +64,12 @@ const[fact,setfact]=useState([])
 
 //to fetch all data
 useEffect(()=>{
-  setspin3(true)
-axios.get(`${Api}/auth/Data`).then((response)=>{setfact(response.data)}).then(()=>setspin3(false))
+axios.get(`${Api}/auth/Data`).then((response)=>{setfact(response.data)})
 },[])
 
 //to fetch filtered data
 useEffect(()=>{
-  setspin3(false)
-axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)}).then(()=>setspin3(false))
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)})
 },[data])
 
 
@@ -288,18 +286,8 @@ const printPDF = () => {
 </div>
 </div>
       <div className="showdata w-5/6 max-xl:w-full max-lg:hidden">
-       <div role="status" class={`flex flex-col items-center mt-6 ${spin3?'':'hidden'}`}>
-   <svg xmlns="http://www.w3.org/2000/svg"
-      class="size-8 animate-[spin_0.8s_linear_infinite] fill-blue-600 dark:fill-blue-500" viewBox="0 0 24 24"
-      aria-hidden="true">
-      <path
-         d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
-         data-original="#000000" />
-   </svg>
-   <span class="sr-only">Loading…</span>
-</div>
       {(active&&fact.length!=0?
-         <table className={`border ${spin3?'hidden':''} w-full`}>
+         <table className='border w-full'>
             <thead>
 <tr>
                 <th className='border'>Date</th>
