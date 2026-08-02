@@ -20,6 +20,8 @@ window.addEventListener('beforeunload', (event) => {
     event.returnValue = '';
 });
 let [spin,setspin]=useState(false)
+let [spin2,setspin2]=useState(false)
+let [spin3,setspin3]=useState(false)
 let Api=useContext(UserContext)
 let [getid,setid]=useState(0);
 let [ids,setids]=useState();
@@ -62,12 +64,14 @@ const[fact,setfact]=useState([])
 
 //to fetch all data
 useEffect(()=>{
-axios.get(`${Api}/auth/Data`).then((response)=>{setfact(response.data)})
+  setspin3(true)
+axios.get(`${Api}/auth/Data`).then((response)=>{setfact(response.data)}).then(()=>setspin3(false))
 },[])
 
 //to fetch filtered data
 useEffect(()=>{
-axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)})
+  setspin3(false)
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)}).then(()=>setspin3(false))
 },[data])
 
 
@@ -136,6 +140,7 @@ axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)}).then(()=>se
 
 //to update fields
 const handlesubmit=async(e)=>{
+  setspin2(true)
   e.preventDefault()
 let response= await axios.put(`${Api}/auth/UpdateAmount/?id=${getid}`,Data)
 alert(response.data)
@@ -148,7 +153,7 @@ setData({
     date:''
 })
 setupdate(false)
-axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)});
+axios.post(`${Api}/auth/Show`,data).then((res)=>{setfact(res.data)}).then(()=>setspin2(false));
 setdata({
   Cname:'',
   Product:''
@@ -283,8 +288,18 @@ const printPDF = () => {
 </div>
 </div>
       <div className="showdata w-5/6 max-xl:w-full max-lg:hidden">
+       <div role="status" class={`flex flex-col items-center mt-6 ${spin3?'':'hidden'}`}>
+   <svg xmlns="http://www.w3.org/2000/svg"
+      class="size-8 animate-[spin_0.8s_linear_infinite] fill-blue-600 dark:fill-blue-500" viewBox="0 0 24 24"
+      aria-hidden="true">
+      <path
+         d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+         data-original="#000000" />
+   </svg>
+   <span class="sr-only">Loading…</span>
+</div>
       {(active&&fact.length!=0?
-         <table className='border w-full'>
+         <table className={`border ${spin3?'hidden':''} w-full`}>
             <thead>
 <tr>
                 <th className='border'>Date</th>
@@ -370,7 +385,17 @@ return(
         <label>Date:</label>
          <input className='bg-white focus:outline-none focus:ring-0 focus:border-transparent w-full p-1 rounded-xl text-lg' type='date' placeholder='Date' name='date' value={Data.date} onChange={handleInput}/>
        </div>
-        <button className='bg-green-500  w-2/6 p-1 rounded-xl text-lg  cursor-pointer text-white'>Update</button>
+        <button className={`bg-green-500  w-2/6 p-1  ${spin2?'hidden':''} rounded-xl text-lg  cursor-pointer text-white`}>Update</button>
+        <div role="status" class={`flex flex-col items-center mt-6 ${spin2?'':'hidden'}`}>
+   <svg xmlns="http://www.w3.org/2000/svg"
+      class="size-8 animate-[spin_0.8s_linear_infinite] fill-blue-600 dark:fill-blue-500" viewBox="0 0 24 24"
+      aria-hidden="true">
+      <path
+         d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+         data-original="#000000" />
+   </svg>
+   <span class="sr-only">Loading…</span>
+</div>
       </form>
       <br />
       <button className='bg-red-500 self-center w-2/6 p-1 rounded-xl text-lg cursor-pointer text-white' onClick={Cancel}>Cancel</button>
