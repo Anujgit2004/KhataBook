@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { UserContext } from './App';
 export default function Store() {
 let navigate=  useNavigate()
+let [spin,setspin]=useState(false);
    let gettoken=localStorage.getItem('token');
 if(!gettoken){
 navigate('/')
@@ -36,6 +37,7 @@ setdata(prod)
 }
 
 const handleSubmit=async(e)=>{
+  setspin(true)
 e.preventDefault();
 if(data.Cname==''||data.Product==''||data.Qty==''||data.TotalPrice==''||data.Deposit==''){
   alert('All fields are required to be filled')
@@ -53,6 +55,7 @@ setdata({
     TotalPrice:'',
     Deposit:''  
 })
+setspin(false)
 navigate('/Main')
 }
 }
@@ -66,7 +69,17 @@ navigate('/Main')
         <input className='bg-white focus:outline-none focus:ring-0 focus:border-transparent w-full p-2 rounded-xl text-2xl max-sm:py-1 max-sm:text-lg' type="number" placeholder='Enter Quantity In Kg' name='Qty' value={data.Qty} onChange={handleinput}/>
         <input className='bg-white focus:outline-none focus:ring-0 focus:border-transparent w-full p-2 rounded-xl text-2xl max-sm:text-lg max-sm:py-1' type="number" placeholder='Total Amount'name='TotalPrice' value={data.TotalPrice} onChange={handleinput}/>
         <input className='bg-white focus:outline-none focus:ring-0 focus:border-transparent w-full p-2 rounded-xl text-2xl max-sm:text-lg max-sm:py-1' type="number" placeholder='Deposit Amount' name='Deposit' value={data.Deposit} onChange={handleinput}/>
-        <button className='bg-white  w-2/6 p-2 max-sm:p-1 rounded-xl text-2xl max-sm:text-xl hover:bg-green-500 cursor-pointer hover:text-white'>Store</button>
+           <button className={`border-2 w-2/6 py-1 ${spin?'hidden':''} max-sm:py-0 rounded-xl text-lg cursor-pointer hover:bg-black hover:text-white hover:border-none`}>Store</button>
+        <div role="status" class={`flex flex-col items-center mt-6 ${spin?'':'hidden'}`}>
+   <svg xmlns="http://www.w3.org/2000/svg"
+      class="size-8 animate-[spin_0.8s_linear_infinite] fill-blue-600 dark:fill-blue-500" viewBox="0 0 24 24"
+      aria-hidden="true">
+      <path
+         d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+         data-original="#000000" />
+   </svg>
+   <span class="sr-only">Loading…</span>
+</div>
       </form>
     </div>
   )

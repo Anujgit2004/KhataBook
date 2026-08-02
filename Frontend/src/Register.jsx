@@ -11,6 +11,7 @@ export default function Register() {
             email:'',
             password:''
         })
+        let [spin,setspin]=useState(false)
     let navigate= useNavigate()
         const handleinput=(e)=>{
     let prod={...input}
@@ -21,6 +22,7 @@ export default function Register() {
         }
        
     const handleSubmit=async(e)=>{
+      setspin(true)
     e.preventDefault();
     if(input.name==''||input.email==''||input.password==''){
       alert('All fields are required to be filled')
@@ -45,6 +47,7 @@ else{
     }
     let gettoken=localStorage.getItem('token');
 if(gettoken){
+  setspin(false)
 navigate('/Main')
 }
 }
@@ -58,7 +61,17 @@ navigate('/Main')
             <input className='border-2 border w-full py-2 max-sm:py-1 rounded-xl px-1 text-xl ' type="text" placeholder='Enter name' name='name' value={input.name} onChange={handleinput}/>
             <input className='border-2 border w-full py-2 max-sm:py-1 rounded-xl px-1 text-xl ' type="text" onChange={handleinput} name='email' value={input.email} placeholder='Email'/>
             <input className='border-2 w-full py-2 max-sm:py-1 rounded-xl px-1 text-xl ' name='password' onChange={handleinput} value={input.password} type="password" placeholder='Password'/>
-            <button className='border-2 w-2/6 py-1 rounded-xl text-lg cursor-pointer hover:bg-black hover:text-white hover:border-none'>Store</button>
+               <button className={`border-2 w-2/6 py-1 ${spin?'hidden':''} max-sm:py-0 rounded-xl text-lg cursor-pointer hover:bg-black hover:text-white hover:border-none`}>Register</button>
+        <div role="status" class={`flex flex-col items-center mt-6 ${spin?'':'hidden'}`}>
+   <svg xmlns="http://www.w3.org/2000/svg"
+      class="size-8 animate-[spin_0.8s_linear_infinite] fill-blue-600 dark:fill-blue-500" viewBox="0 0 24 24"
+      aria-hidden="true">
+      <path
+         d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+         data-original="#000000" />
+   </svg>
+   <span class="sr-only">Loading…</span>
+</div>
           </form>
           <div className="signinfo flex items-center gap-3">
             <p className='text-xl max-sm:text-lg'>Already Registerd?</p>
