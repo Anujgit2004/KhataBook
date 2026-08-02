@@ -23,6 +23,7 @@ setinput(prod)
     }
    
 const handleSubmit=async(e)=>{
+   setspin(true)
 e.preventDefault();
 if(input.email==''||input.password==''){
     alert('All fields are required to be filled')
@@ -44,16 +45,16 @@ else{
 
 let gettoken=localStorage.getItem('token');
 if(gettoken){
-  setTimeout(() => {
      setinput({
    email:'',
         password:''  
 })
+setspin(false)
     navigate('/Main')
-  }, 1000);
- setspin(true)
+  }
+
 }
-}
+
 
   return (
     <>
