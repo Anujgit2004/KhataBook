@@ -33,8 +33,8 @@ export default function Register() {
     else{
     let response=await axios.post(`${Api}/auth/Signup`,input)
     if(response.data.message){
+      setspin(false)
 alert(response.data.message)
-setspin(false)
 }
 else{
   localStorage.setItem('token',response.data.data)
